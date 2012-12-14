@@ -1,12 +1,14 @@
 package retrobot
 
+import grails.web.RequestParameter
+
 class RetrospectiveController {
 
+    def discussionItemService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def show() {
         def retro = null
-        def discussionItem = new DiscussionItem(content: "test item")
 
         if (params.id) {
             retro = Retrospective.findById(params.id)
@@ -15,14 +17,25 @@ class RetrospectiveController {
             retro = Retrospective.findByIsActive(true)
 
             if (retro == null) {
-                retro = new Retrospective(discussionItems: [])
-                retro.addToDiscussionItems(discussionItem)
+                retro = new Retrospective(discussionItems: [], isActive: true)
                 retro.save()
             }
         }
 
-        render "You are looking at a retrospective tool. You see a discussion item. It says <i>${retro.discussionItems[0].content}</i>"
+        [retro: retro]
     }
+
+    def update(){
+        discussionItemService.createDiscussionItem(params.newDiscussionItem, params.retroId)
+//        redirect(action: 'show', id: params.retroId)
+        def retro = Retrospective.findById(params.retroId)
+
+//        render retro.discussionItems.last().content
+
+        render(template:"discussionItem", bean: retro.discussionItems.last())
+        // append to the bottom of the div
+    }
+
 
 
 

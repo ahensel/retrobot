@@ -1,36 +1,48 @@
-
 <%@ page import="retrobot.Retrospective" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'retrospective.label', default: 'Retrospective')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
-	</head>
-	<body>
-		<a href="#show-retrospective" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="show-retrospective" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<ol class="property-list retrospective">
-			
-			</ol>
-			<g:form>
-				<fieldset class="buttons">
-					<g:hiddenField name="id" value="${retrospectiveInstance?.id}" />
-					<g:link class="edit" action="edit" id="${retrospectiveInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
-		</div>
-	</body>
+    <head>
+        %{--<meta name="layout" content="main">--}%
+        <g:javascript library="jquery"/>
+        <r:layoutResources/>
+    </head>
+    <body>
+        <div class="retrospective" style="border: 1px solid #ffc8c8; padding:1em; margin: 1em; background: #fff5f5" id="retro">
+            Foo team retrospective, Fri, Jan 4, 2013
+            <div id="retroItemList">
+                <g:each in="${retro.discussionItems}" var="discussionItem">
+                    <g:render template="discussionItem" bean="${discussionItem}"/>
+                </g:each>
+            </div>
+            %{--<div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">--}%
+                %{--<g:textArea name="newDiscussionItem" rows="5" cols="100"/>--}%
+                %{--<div>--}%
+                    %{--<button onclick="addDiscussionItem()">Add discussion item</button>--}%
+                    %{--<button disabled="disabled">Add poll</button>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">--}%
+                %{--<g:form action="update" id="${params.id}">--}%
+                    %{--<g:textArea name="newDiscussionItem" id="content" rows="5" cols="100"/>--}%
+                    %{--<div>--}%
+                        %{--<g:form name="addDiscussionItem">--}%
+                            %{--<g:hiddenField name="retroId" value="${retro.id}"/>--}%
+                            %{--<g:submitButton name="add" value="Add Discussion Item"/>--}%
+                        %{--</g:form>--}%
+                    %{--</div>--}%
+                %{--</g:form>--}%
+            %{--</div>--}%
+        %{--</div>--}%
+
+            <div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">
+                <g:formRemote url="[ controller: 'retrospective', action: 'update']" name="add">
+                    <g:textArea name="newDiscussionItem" id="content" rows="5" cols="100"/>
+                    <g:hiddenField name="retroId" value="${retro.id}"/>
+                    <div>
+                        <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemList" action="update" controller="retrospective"/>
+                    </div>
+                </g:formRemote>
+            </div>
+        </div>
+    </body>
 </html>
