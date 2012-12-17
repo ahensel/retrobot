@@ -13,10 +13,11 @@
                 });
             }
         </script>
+        <link rel="stylesheet" href="<g:createLinkTo dir='css' file='retro.css'/>"/>
         <r:layoutResources/>
     </head>
     <body>
-        <div class="retrospective" style="border: 1px solid #ffc8c8; padding:1em; margin: 1em; background: #fff5f5" id="retro">
+        <div class="retrospective" id="retro">
             Foo team retrospective, Fri, Jan 4, 2013
             <div id="retroItemList">
                 <g:each in="${retro.discussionItems}" var="discussionItem">
@@ -24,7 +25,7 @@
                 </g:each>
             </div>
             <div id="retroItemJustAdded" hidden="hidden"></div>
-            <div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">
+            <div class="discussionItem">
                 <g:formRemote url="[ controller: 'retrospective', action: 'update']" name="add">
                     <g:textArea name="newDiscussionItem" id="content" rows="5" cols="100" autofocus="autofocus"/>
                     <g:hiddenField name="retroId" value="${retro.id}"/>
