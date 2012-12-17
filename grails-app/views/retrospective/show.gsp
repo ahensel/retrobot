@@ -4,6 +4,15 @@
     <head>
         %{--<meta name="layout" content="main">--}%
         <g:javascript library="jquery"/>
+        <script type="text/javascript">
+            function appendItemJustAdded() {
+                $('#retroItemJustAdded').show('slow', function() {
+                    $('#content').val("").focus();
+                    $('#retroItemList').append($(this).html());
+                    $(this).html("").hide();
+                });
+            }
+        </script>
         <r:layoutResources/>
     </head>
     <body>
@@ -14,32 +23,13 @@
                     <g:render template="discussionItem" bean="${discussionItem}"/>
                 </g:each>
             </div>
-            %{--<div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">--}%
-                %{--<g:textArea name="newDiscussionItem" rows="5" cols="100"/>--}%
-                %{--<div>--}%
-                    %{--<button onclick="addDiscussionItem()">Add discussion item</button>--}%
-                    %{--<button disabled="disabled">Add poll</button>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">--}%
-                %{--<g:form action="update" id="${params.id}">--}%
-                    %{--<g:textArea name="newDiscussionItem" id="content" rows="5" cols="100"/>--}%
-                    %{--<div>--}%
-                        %{--<g:form name="addDiscussionItem">--}%
-                            %{--<g:hiddenField name="retroId" value="${retro.id}"/>--}%
-                            %{--<g:submitButton name="add" value="Add Discussion Item"/>--}%
-                        %{--</g:form>--}%
-                    %{--</div>--}%
-                %{--</g:form>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
+            <div id="retroItemJustAdded" hidden="hidden"></div>
             <div class="discussionItem" style="border: 1px solid #8080ff; padding:0.5em; margin: 0.5em; background: #ffffee">
                 <g:formRemote url="[ controller: 'retrospective', action: 'update']" name="add">
-                    <g:textArea name="newDiscussionItem" id="content" rows="5" cols="100"/>
+                    <g:textArea name="newDiscussionItem" id="content" rows="5" cols="100" autofocus="autofocus"/>
                     <g:hiddenField name="retroId" value="${retro.id}"/>
                     <div>
-                        <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemList" action="update" controller="retrospective"/>
+                        <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="update" controller="retrospective"/>
                     </div>
                 </g:formRemote>
             </div>

@@ -26,14 +26,9 @@ class RetrospectiveController {
     }
 
     def update(){
-        discussionItemService.createDiscussionItem(params.newDiscussionItem, params.retroId)
-//        redirect(action: 'show', id: params.retroId)
-        def retro = Retrospective.findById(params.retroId)
+        def discussionItem = discussionItemService.createDiscussionItem(params.newDiscussionItem, params.retroId)
 
-//        render retro.discussionItems.last().content
-
-        render(template:"discussionItem", bean: retro.discussionItems.last())
-        // append to the bottom of the div
+        render(template:"discussionItem", bean: discussionItem)
     }
 
 
