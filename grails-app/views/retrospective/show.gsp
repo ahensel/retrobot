@@ -3,7 +3,12 @@
 <html>
     <head>
         %{--<meta name="layout" content="main">--}%
+
+        <link rel="stylesheet" href="<g:createLinkTo dir='css' file='retro.css'/>"/>
+
         <g:javascript library="jquery"/>
+        <r:layoutResources/>
+
         <script type="text/javascript">
             function appendItemJustAdded() {
                 $('#retroItemJustAdded').show('slow', function() {
@@ -13,10 +18,12 @@
                 });
             }
         </script>
-        <link rel="stylesheet" href="<g:createLinkTo dir='css' file='retro.css'/>"/>
-        <r:layoutResources/>
     </head>
     <body>
+        <div class="sidebar">
+            links to previous<br/>
+            retrospectives go here
+        </div>
         <div class="retrospective" id="retro">
             Foo team retrospective, Fri, Jan 4, 2013
             <div id="retroItemList">
