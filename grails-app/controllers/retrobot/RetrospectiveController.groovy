@@ -1,7 +1,5 @@
 package retrobot
 
-import grails.web.RequestParameter
-
 class RetrospectiveController {
 
     def discussionItemService
@@ -31,6 +29,16 @@ class RetrospectiveController {
         render(template:"discussionItem", bean: discussionItem)
     }
 
+    def close() {
+        def oldRetro = Retrospective.findById(params.retroId)
+        oldRetro.isActive = false
+        oldRetro.save()
+
+        def newRetro = new Retrospective(discussionItems: [], isActive: true)
+        newRetro.save()
+
+        redirect([action: "show"])
+    }
 
 
 

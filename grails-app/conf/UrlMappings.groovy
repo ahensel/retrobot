@@ -7,7 +7,7 @@ class UrlMappings {
 			}
 		}
 
-		"/"(controller:"retrospective", action:"show")
+        "/$id?"(controller:"retrospective", action:"show")
 		"500"(view:'/error')
 	}
 }
