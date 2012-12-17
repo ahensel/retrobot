@@ -1,0 +1,13 @@
+div.retrospective {
+    border: 1px solid #ffc8c8;
+    padding:1em;
+    margin: 1em;
+    background: #fff5f5
+}
+
+div.discussionItem {
+    border: 1px solid #8080ff;
+    padding:0.5em;
+    margin: 0.5em;
+    background: #ffffee
+}
