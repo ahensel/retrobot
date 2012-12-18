@@ -5,6 +5,9 @@
         %{--<meta name="layout" content="main">--}%
 
         <link rel="stylesheet" href="<g:createLinkTo dir='css' file='retro.css'/>"/>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+        <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
         <g:javascript library="jquery"/>
         <r:layoutResources/>
@@ -18,14 +21,21 @@
                 });
             }
         </script>
+
+        <script>
+            $(function(){
+                $(".discussionItem").draggable()
+            })
+        </script>
     </head>
     <body>
         <div class="sidebar">
+            <g:link controller="retrospective" action="show">Current Retro</g:link>
+            <br/><br/>
             <g:each in="${previousRetros}" var="previousRetro">
                 <g:link controller="retrospective" action="show" id="${previousRetro.id}">Retrospective ${previousRetro.id}</g:link>
                 <br/>
             </g:each>
-            <g:link controller="retrospective" action="show">Current Retro</g:link>
         </div>
         <div class="retrospective" id="retro">
             Foo team retrospective
