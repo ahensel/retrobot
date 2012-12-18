@@ -21,12 +21,6 @@
                 });
             }
         </script>
-
-        <script>
-            $(function(){
-                $(".discussionItem").draggable()
-            })
-        </script>
     </head>
     <body>
         <div class="sidebar">

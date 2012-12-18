@@ -4,6 +4,7 @@ div.retrospective {
     margin: 15px;
     margin-left: 212px;
     background: #fff5f5;
+    border-radius: 8px;
 }
 
 div.discussionItem {
@@ -11,6 +12,10 @@ div.discussionItem {
     padding:8px;
     margin: 8px;
     background: #ffffee;
+    border-radius: 8px;
+    -moz-box-shadow: 1px 1px 2px #000;
+    -webkit-box-shadow: 1px 1px 2px #000;
+    box-shadow: 1px 1px 2px #000;
 }
 
 div.sidebar {
@@ -23,4 +28,5 @@ div.sidebar {
     padding:15px;
     margin: 15px;
     width:150px;
+    border-radius: 8px;
 }
