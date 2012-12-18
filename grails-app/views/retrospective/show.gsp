@@ -21,11 +21,14 @@
     </head>
     <body>
         <div class="sidebar">
-            links to previous<br/>
-            retrospectives go here
+            <g:each in="${previousRetros}" var="previousRetro">
+                <g:link controller="retrospective" action="show" id="${previousRetro.id}">Retrospective ${previousRetro.id}</g:link>
+                <br/>
+            </g:each>
+            <g:link controller="retrospective" action="show">Current Retro</g:link>
         </div>
         <div class="retrospective" id="retro">
-            Foo team retrospective, Fri, Jan 4, 2013
+            Foo team retrospective
             <div id="retroItemList">
                 <g:each in="${retro.discussionItems}" var="discussionItem">
                     <g:render template="discussionItem" bean="${discussionItem}"/>

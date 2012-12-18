@@ -20,7 +20,9 @@ class RetrospectiveController {
             }
         }
 
-        [retro: retro]
+        def previousRetros = Retrospective.findAllByIsActive(false)
+
+        [retro: retro, previousRetros: previousRetros]
     }
 
     def update(){
