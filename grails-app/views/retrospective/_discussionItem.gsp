@@ -1,4 +1,6 @@
 <div class="discussionItem">
     ${it.content}
-    <g:link controller="discussionItem" action="edit" params="[id: it.id]">Edit</g:link>
+    <span style="float: right">
+        <g:link controller="discussionItem" action="edit" params="[id: it.id]">Edit</g:link>
+    </span>
 </div>

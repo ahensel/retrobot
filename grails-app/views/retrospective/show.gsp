@@ -32,30 +32,38 @@
             </g:each>
         </div>
         <div class="retrospective" id="retro">
-            Foo team retrospective
-            <div id="retroItemList">
-                <g:each in="${retro.discussionItems}" var="discussionItem">
-                    <g:render template="discussionItem" bean="${discussionItem}"/>
-                </g:each>
-            </div>
-            <g:if test="${retro.isActive}">
-                <div id="retroItemJustAdded" hidden="hidden"></div>
-                <div class="discussionItem">
-                    <g:formRemote url="[controller: 'retrospective', action: 'update']" name="add">
-                        <g:textArea name="newDiscussionItem" id="content" rows="5" cols="100" autofocus="autofocus"/>
-                        <g:hiddenField name="retroId" value="${retro.id}"/>
-                        <div>
-                            <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="update" controller="retrospective"/>
-                        </div>
-                    </g:formRemote>
-                </div>
-                <div>
+            <div class="retroHeader">
+                Foo team retrospective
+                <span style="float: right">
                     <g:form url="[controller: 'retrospective', action: 'close']" name="close">
                         <g:hiddenField name="retroId" value="${retro.id}"/>
                         <g:submitButton name="Retrospective" value="Close Retro"/>
                     </g:form>
+                </span>
+                <hr style="border: 1px solid #808080">
+            </div>
+            <div class="retroItemColumn">
+                <div class="columnHeader">
+                    Discussion Items
                 </div>
-            </g:if>
+                <div id="retroItemList">
+                    <g:each in="${retro.discussionItems}" var="discussionItem">
+                        <g:render template="discussionItem" bean="${discussionItem}"/>
+                    </g:each>
+                </div>
+                <g:if test="${retro.isActive}">
+                    <div id="retroItemJustAdded" hidden="hidden"></div>
+                    <div class="discussionItem">
+                        <g:formRemote url="[controller: 'retrospective', action: 'update']" name="add">
+                            <g:textArea name="newDiscussionItem" id="content" rows="5" cols="50" width="100%" autofocus="autofocus"/>
+                            <g:hiddenField name="retroId" value="${retro.id}"/>
+                            <div>
+                                <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="update" controller="retrospective"/>
+                            </div>
+                        </g:formRemote>
+                    </div>
+                </g:if>
+            </div>
         </div>
     </body>
 </html>

@@ -1,14 +1,21 @@
 div.retrospective {
-    border: 1px solid #ffc8c8;
+    border: 1px solid #c8c8c8;
     padding:15px;
     margin: 15px;
     margin-left: 212px;
-    background: #fff5f5;
+    background: #f5f5f5;
     border-radius: 8px;
 }
 
+div.retroItemColumn{
+    width: 410px;
+    height: 100%;
+    border-radius: 8px;
+    background: #f5f5f5;
+}
+
 div.discussionItem {
-    border: 1px solid #8080ff;
+    border: 1px solid #808080;
     padding:8px;
     margin: 8px;
     background: #ffffee;
@@ -23,10 +30,26 @@ div.sidebar {
     top: 0;
     left: 0;
     height: 100%;
-    border: 1px solid #c8ffc8;
-    background: #f5fff5;
+    border: 1px solid #c8c8c8;
+    background: #f5f5f5;
     padding:15px;
     margin: 15px;
     width:150px;
     border-radius: 8px;
 }
+
+div.retroHeader{
+    padding-left: 12px;
+    text-align: left;
+    font-size: 18pt;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+div.columnHeader {
+    padding-left: 12px;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
