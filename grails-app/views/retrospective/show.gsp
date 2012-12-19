@@ -15,11 +15,17 @@
         <script type="text/javascript">
             function appendItemJustAdded() {
                 $('#retroItemJustAdded').show('slow', function() {
+                    $("div.discussionItem", this).hover(function(){$("div.itemEditLink", this).toggle()});
+
                     $('#content').val("").focus();
-                    $('#retroItemList').append($(this).html());
+                    $('#retroItemList').append($(this).children());
                     $(this).html("").hide();
                 });
             }
+
+            $(document).ready(function() {
+                $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()})
+            });
         </script>
     </head>
     <body>

@@ -1,6 +1,6 @@
 <div class="discussionItem">
     ${it.content}
-    <span style="float: right">
+    <div class="itemEditLink" style="float: right" hidden="true">
         <g:link controller="discussionItem" action="edit" params="[id: it.id]">Edit</g:link>
-    </span>
+    </div>
 </div>
