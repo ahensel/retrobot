@@ -3,6 +3,7 @@ package retrobot
 class DiscussionItem {
 
     String content
+    static hasMany = [actionItems: ActionItem]
     static belongsTo = [retrospective: Retrospective]
 
     static constraints = {

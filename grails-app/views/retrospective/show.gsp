@@ -70,6 +70,16 @@
                     </div>
                 </g:if>
             </div>
+            <div class="retroItemColumn">
+                <div class="columnHeader">
+                    Action Items
+                </div>
+                <div id="actionItemList">
+                    <g:each in="${retro.actionItems}" var="actionItem">
+                        <g:render template="actionItem" bean="${actionItem}"/>
+                    </g:each>
+                </div>
+            </div>
         </div>
     </body>
 </html>

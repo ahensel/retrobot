@@ -39,7 +39,11 @@ class DiscussionItemController {
             discussionItem.delete(flush:true)
             redirect(controller: 'retrospective', action: 'show', id: retroID)
         }
+    }
 
+    def addActionItem(){
+        def discussionItem = DiscussionItem.findById(params.id)
+        discussionItem.addToActionItems(params.actionItem)
     }
 }
 
