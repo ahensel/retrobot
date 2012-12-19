@@ -35,7 +35,8 @@ class DiscussionItemController {
             render status: HttpServletResponse.SC_BAD_REQUEST
         } else{
             def retroID = discussionItem.retrospective.id
-            discussionItem.delete()
+            discussionItem.retrospective.removeFromDiscussionItems(discussionItem)
+            discussionItem.delete(flush:true)
             redirect(controller: 'retrospective', action: 'show', id: retroID)
         }
 
