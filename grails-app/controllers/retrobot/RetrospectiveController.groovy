@@ -1,7 +1,6 @@
 package retrobot
 
 import grails.web.RequestParameter
-
 class RetrospectiveController {
 
     def discussionItemService
@@ -22,7 +21,9 @@ class RetrospectiveController {
             }
         }
 
-        [retro: retro]
+        def previousRetros = Retrospective.findAllByIsActive(false)
+
+        [retro: retro, previousRetros: previousRetros]
     }
 
     def update(){
@@ -31,7 +32,27 @@ class RetrospectiveController {
         render(template:"discussionItem", bean: discussionItem)
     }
 
+    def close() {
+        def oldRetro = Retrospective.findById(params.retroId)
+        oldRetro.isActive = false
+        oldRetro.save()
 
+        def newRetro = new Retrospective(discussionItems: [], isActive: true)
+        newRetro.save()
+
+        copyRecurringDiscussionItems(oldRetro, newRetro)
+
+        redirect([action: "show"])
+    }
+
+    private def copyRecurringDiscussionItems(oldRetro, newRetro) {
+        int num = 1;
+        oldRetro.getDiscussionItems().findAll {i -> i.isRecurring}.each {i ->
+            def newDiscussionItem = new DiscussionItem(content: i.content, isRecurring: i.isRecurring, number: num++)
+            newRetro.addToDiscussionItems(newDiscussionItem)
+        }
+        newRetro.save();
+    }
 
 
 //
