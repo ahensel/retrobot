@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="<g:createLinkTo dir='css' file='retro.css'/>"/>
         <r:layoutResources/>
 
-        <g:set var="entityName" value="${message(code: 'discussionItem.label', default: 'DiscussionItem')}" />
+        <g:set var="entityName" value="Discussion Item ${discussionItem.number}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
 	</head>
 	<body>
