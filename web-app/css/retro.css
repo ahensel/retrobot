@@ -1,3 +1,7 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
 div.retrospective {
     border: 1px solid #c8c8c8;
     padding:15px;
@@ -30,6 +34,13 @@ div.discussionItem:hover {
     -moz-box-shadow: 1px 1px 8px #00f;
     -webkit-box-shadow: 1px 1px 8px #00f;
     box-shadow: 1px 1px 8px #00f;
+}
+
+div.discussionItemNumber {
+    float: left;
+    padding: 8px;
+    margin: 9px;
+    font-weight: bold;
 }
 
 div.sidebar {
