@@ -61,7 +61,7 @@
                     <div id="retroItemJustAdded" hidden="hidden"></div>
                     <div class="discussionItem">
                         <g:formRemote url="[controller: 'retrospective', action: 'update']" name="add">
-                            <g:textArea name="newDiscussionItem" id="content" rows="5" cols="50" width="100%" autofocus="autofocus"/>
+                            <g:textArea name="newDiscussionItem" id="content" rows="5" cols="50" maxlength="255" width="100%" autofocus="autofocus"/>
                             <g:hiddenField name="retroId" value="${retro.id}"/>
                             <div>
                                 <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="update" controller="retrospective"/>
