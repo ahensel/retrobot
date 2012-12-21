@@ -26,7 +26,7 @@ class RetrospectiveController {
     }
 
     def update(){
-        def discussionItem = discussionItemService.createDiscussionItem(params.newDiscussionItem, params.retroId)
+        def discussionItem = discussionItemService.createDiscussionItem(params.newDiscussionItem, params.retroId, params.classification)
 
         render(template:"discussionItem", bean: discussionItem)
     }
@@ -47,7 +47,7 @@ class RetrospectiveController {
     private def copyRecurringDiscussionItems(oldRetro, newRetro) {
         int num = 1;
         oldRetro.getDiscussionItems().findAll {i -> i.isRecurring}.each {i ->
-            def newDiscussionItem = new DiscussionItem(content: i.content, isRecurring: i.isRecurring, number: num++)
+            def newDiscussionItem = new DiscussionItem(content: i.content, isRecurring: i.isRecurring, classification: i.classification, number: num++)
             newRetro.addToDiscussionItems(newDiscussionItem)
         }
         newRetro.save();

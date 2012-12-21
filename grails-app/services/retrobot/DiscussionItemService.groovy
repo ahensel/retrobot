@@ -2,11 +2,11 @@ package retrobot
 
 class DiscussionItemService {
 
-    def createDiscussionItem(content, retroId){
+    def createDiscussionItem(content, retroId, classification){
         def retro = Retrospective.findById(retroId)
 
         if(retro){
-            def item = new DiscussionItem(content: content)
+            def item = new DiscussionItem(content: content, classification: classification)
             retro.addToDiscussionItems(item)
             item.number = findHighestDiscussionItemNumberInRetro(retro) + 1
             retro.save()

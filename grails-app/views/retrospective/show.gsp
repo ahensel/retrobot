@@ -65,6 +65,8 @@
                             <g:hiddenField name="retroId" value="${retro.id}"/>
                             <div>
                                 <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="update" controller="retrospective"/>
+                                <g:select name="classification" id="classification" optionKey="id" optionValue="value"
+                                          from="${Retrospective.DiscussionItemClassifications}"/>
                             </div>
                         </g:formRemote>
                     </div>
