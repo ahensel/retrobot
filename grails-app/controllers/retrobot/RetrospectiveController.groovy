@@ -1,5 +1,6 @@
 package retrobot
 
+import grails.web.RequestParameter
 class RetrospectiveController {
 
     def discussionItemService

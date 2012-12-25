@@ -6,37 +6,19 @@ class ActionItemController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index() {
-        redirect(action: "list", params: params)
-    }
-
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [actionItemInstanceList: ActionItem.list(params), actionItemInstanceTotal: ActionItem.count()]
-    }
-
     def create() {
-        [actionItemInstance: new ActionItem(params)]
+        def discussionItem = DiscussionItem.findById(params.discussionId)
+        [actionItemInstance: new ActionItem(params), discussionItem: discussionItem ]
     }
 
     def save() {
         def actionItem = new ActionItem(params)
-        def discussionItem = DiscussionItem.findById(params.discussionId)
+        def discussionItem = DiscussionItem.findById(params.discussionItemId)
         discussionItem.addToActionItems(actionItem)
+        discussionItem.retrospective.addToActionItems(actionItem)
         discussionItem.retrospective.save()
 
         redirect(controller: "retrospective", action: "show", id: discussionItem.retrospective.id)
-    }
-
-    def show(Long id) {
-        def actionItemInstance = ActionItem.get(id)
-        if (!actionItemInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'actionItem.label', default: 'ActionItem'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [actionItemInstance: actionItemInstance]
     }
 
     def edit(Long id) {
