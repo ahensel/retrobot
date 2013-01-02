@@ -30,7 +30,7 @@ div.discussionItem {
 }
 
 div.discussionItemType1 {
-    background: #f5fff5;
+    background: #eeffee;
 }
 
 div.discussionItemType2 {
@@ -38,7 +38,7 @@ div.discussionItemType2 {
 }
 
 div.discussionItemType3 {
-    background: #ffffee;
+    background: #ffffdd;
 }
 
 div.discussionItem:hover {
