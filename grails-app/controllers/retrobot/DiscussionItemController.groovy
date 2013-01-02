@@ -28,6 +28,12 @@ class DiscussionItemController {
         redirect(controller: 'retrospective', action: 'show', id: discussionItem.retrospective.id)
     }
 
+    def create(){
+        def discussionItem = discussionItemService.createDiscussionItem(params.newRetroItemText, params.retroId, params.classification)
+
+        render(template:"discussionItem", bean: discussionItem)
+    }
+
     def delete(){
         def discussionItem = DiscussionItem.findById(params.id)
 

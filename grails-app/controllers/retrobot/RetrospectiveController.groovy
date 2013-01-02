@@ -25,12 +25,6 @@ class RetrospectiveController {
         [retro: retro, previousRetros: previousRetros]
     }
 
-    def update(){
-        def discussionItem = discussionItemService.createDiscussionItem(params.newDiscussionItem, params.retroId, params.classification)
-
-        render(template:"discussionItem", bean: discussionItem)
-    }
-
     def close() {
         def oldRetro = Retrospective.findById(params.retroId)
         oldRetro.isActive = false

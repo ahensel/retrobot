@@ -8,3 +8,5 @@
 
 <g:checkBox name="isRecurring" value="${discussionItem?.isRecurring}" />
 <label for="isRecurring">Recurring</label>
+
+

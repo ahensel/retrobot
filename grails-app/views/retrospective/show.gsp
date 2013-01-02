@@ -19,14 +19,45 @@
                     $("div.discussionItem", this).hover(function(){$("div.actionItemLink", this).toggle()});
 
                     $('#content').val("").focus();
+                    $("#newDiscussionItemButton").attr('disabled', 'disabled')
                     $('#retroItemList').append($(this).children());
                     $(this).html("").hide();
                 });
             }
 
+            function togglePollEditor() {
+                if ($('#pollEditor').css('display') == 'none') {
+                    $('#pollEditor').show('slow');
+                    $('#newPollButton').show();
+                    $('#newDiscussionItemButton, #classification').hide();
+                    $("textarea#content").val().trim().length == 0 ? $("#newPollButton").attr('disabled', 'disabled') : $("#newPollButton").removeAttr('disabled');
+                }
+                else {
+                    $('#pollEditor').toggle('hide');
+                    $('#newPollButton').hide();
+                    $('#newDiscussionItemButton, #classification').show();
+                    $("textarea#content").val().trim().length == 0 ? $("#newDiscussionItemButton").attr('disabled', 'disabled') : $("#newDiscussionItemButton").removeAttr('disabled');
+                }
+            }
+
+            function addPollItem() {
+                var pollItemContent = $("#newPollItemContent").val();
+                $("#pollItems").append("<li>" + pollItemContent + "</li>");
+                var pollItemNumber = parseInt($("#pollItemCount").val());
+                $("#pollItemCount").val(pollItemNumber + 1);
+                $("#pollEditor").append("<input type='hidden' name='pollItem" + pollItemNumber + "' value='" + pollItemContent + "'/>");
+
+            }
+
             $(document).ready(function() {
-                $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()})
-                $("div.discussionItem").hover(function(){$("div.actionItemLink", this).toggle()})
+                $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()});
+                $("div.discussionItem").hover(function(){$("div.actionItemLink", this).toggle()});
+
+                $("#newPollButton").hide();
+                $("#newDiscussionItemButton").attr('disabled', 'disabled');
+                $("textarea#content").keyup(function(){
+                    $("textarea#content").val().trim().length == 0 ? $("#newDiscussionItemButton, #newPollButton").attr('disabled', 'disabled') : $("#newDiscussionItemButton, #newPollButton").removeAttr('disabled');
+                });
             });
         </script>
     </head>
@@ -57,19 +88,30 @@
                 </div>
                 <div id="retroItemList">
                     <g:each in="${retro.discussionItems}" var="discussionItem">
-                        <g:render template="discussionItem" bean="${discussionItem}"/>
+                        <g:render template="../discussionItem/discussionItem" bean="${discussionItem}"/>
                     </g:each>
                 </div>
                 <g:if test="${retro.isActive}">
                     <div id="retroItemJustAdded" hidden="hidden"></div>
                     <div class="discussionItem">
-                        <g:formRemote url="[controller: 'retrospective', action: 'update']" name="add">
-                            <g:textArea name="newDiscussionItem" id="content" rows="5" cols="50" maxlength="255" width="100%" autofocus="autofocus"/>
+                        <g:formRemote url="[controller: 'discussionItem', action: 'create']" name="add">
+                            <g:textArea name="newRetroItemText" id="content" rows="5" cols="50" maxlength="255" width="100%" autofocus="autofocus"/>
                             <g:hiddenField name="retroId" value="${retro.id}"/>
+                            <div id="pollEditor" hidden="hidden">
+                                Add Poll Items:
+                                <ul id="pollItems"></ul>
+                                <input type='hidden' id='pollItemCount' name='pollItemCount' value='0'/>
+                                <div class="newPollItemDiv" style="margin-bottom: 10px;">
+                                    <g:textField name="newPollItemContent"></g:textField><button onclick="addPollItem(); return false;">Add</button>
+                                </div>
+                            </div>
+
                             <div>
-                                <g:submitToRemote name="DiscussionItem" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="update" controller="retrospective"/>
+                                <g:submitToRemote name="DiscussionItem" id="newDiscussionItemButton" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="create" controller="discussionItem"/>
+                                <g:submitToRemote name="Poll" id="newPollButton" value="Add Poll" update="retroItemJustAdded" after="appendItemJustAdded()" action="create" controller="poll"/>
                                 <g:select name="classification" id="classification" optionKey="id" optionValue="value"
                                           from="${Retrospective.DiscussionItemClassifications}"/>
+                                <a href="#" onclick="togglePollEditor()" style="font-size: 12px; float: right;">Poll</a>
                             </div>
                         </g:formRemote>
                     </div>
@@ -81,7 +123,7 @@
                 </div>
                 <div id="actionItemList">
                     <g:each in="${retro.actionItems}" var="actionItem">
-                        <g:render template="actionItem" bean="${actionItem}"/>
+                        <g:render template="../actionItem/actionItem" bean="${actionItem}"/>
                     </g:each>
                 </div>
             </div>
