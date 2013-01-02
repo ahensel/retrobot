@@ -31,6 +31,7 @@
                     $('#newPollButton').show();
                     $('#newDiscussionItemButton, #classification').hide();
                     $("textarea#content").val().trim().length == 0 ? $("#newPollButton").attr('disabled', 'disabled') : $("#newPollButton").removeAttr('disabled');
+                    $("#newPollItemContent").val("").focus();
                 }
                 else {
                     $('#pollEditor').toggle('hide');
@@ -46,7 +47,7 @@
                 var pollItemNumber = parseInt($("#pollItemCount").val());
                 $("#pollItemCount").val(pollItemNumber + 1);
                 $("#pollEditor").append("<input type='hidden' name='pollItem" + pollItemNumber + "' value='" + pollItemContent + "'/>");
-
+                $("#newPollItemContent").val("").focus();
             }
 
             $(document).ready(function() {
@@ -98,11 +99,11 @@
                             <g:textArea name="newRetroItemText" id="content" rows="5" cols="50" maxlength="255" width="100%" autofocus="autofocus"/>
                             <g:hiddenField name="retroId" value="${retro.id}"/>
                             <div id="pollEditor" hidden="hidden">
-                                Add Poll Items:
+                                <span style="font-size: 10pt;">Add Poll Items:</span>
                                 <ul id="pollItems"></ul>
                                 <input type='hidden' id='pollItemCount' name='pollItemCount' value='0'/>
                                 <div class="newPollItemDiv" style="margin-bottom: 10px;">
-                                    <g:textField name="newPollItemContent"></g:textField><button onclick="addPollItem(); return false;">Add</button>
+                                    &bull;&nbsp;<g:textField name="newPollItemContent" style="width: 80%;"></g:textField>&nbsp;<button onclick="addPollItem(); return false;">Add</button>
                                 </div>
                             </div>
 
