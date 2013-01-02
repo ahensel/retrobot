@@ -16,6 +16,7 @@
             function appendItemJustAdded() {
                 $('#retroItemJustAdded').show('slow', function() {
                     $("div.discussionItem", this).hover(function(){$("div.itemEditLink", this).toggle()});
+                    $("div.discussionItem", this).hover(function(){$("div.actionItemLink", this).toggle()});
 
                     $('#content').val("").focus();
                     $('#retroItemList').append($(this).children());
@@ -25,6 +26,7 @@
 
             $(document).ready(function() {
                 $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()})
+                $("div.discussionItem").hover(function(){$("div.actionItemLink", this).toggle()})
             });
         </script>
     </head>
@@ -48,6 +50,7 @@
                 </span>
                 <hr style="border: 1px solid #808080">
             </div>
+            <div class="columnContainer">
             <div class="retroItemColumn">
                 <div class="columnHeader">
                     Discussion Items
@@ -72,7 +75,7 @@
                     </div>
                 </g:if>
             </div>
-            <div class="retroItemColumn">
+            <div class="actionItemColumn">
                 <div class="columnHeader">
                     Action Items
                 </div>
@@ -81,6 +84,7 @@
                         <g:render template="actionItem" bean="${actionItem}"/>
                     </g:each>
                 </div>
+            </div>
             </div>
         </div>
     </body>
