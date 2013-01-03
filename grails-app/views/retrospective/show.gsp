@@ -88,8 +88,8 @@
                     Discussion Items
                 </div>
                 <div id="retroItemList">
-                    <g:each in="${retro.discussionItems}" var="discussionItem">
-                        <g:render template="../discussionItem/discussionItem" bean="${discussionItem}"/>
+                    <g:each in="${retro.retroItems}" var="retroItem">
+                        <g:render template="../discussionItem/discussionItem" bean="${retroItem}"/>
                     </g:each>
                 </div>
                 <g:if test="${retro.isActive}">

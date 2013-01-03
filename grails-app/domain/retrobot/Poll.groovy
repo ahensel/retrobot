@@ -1,10 +1,18 @@
 package retrobot
 
-class Poll {
-    static belongsTo = [retrospective: Retrospective]
-    static hasMany = [pollItems: PollItem]
-    String content
+class Poll extends RetroItem {
 
-    static constraints = {
-    }
+//    String content
+//    static belongsTo = [retrospective: Retrospective]
+//    int number
+//    boolean isRecurring
+//
+//    static constraints = {
+//        content nullable: false
+//    }
+
+
+
+    static hasMany = [pollItems: PollItem]
+    Boolean isOpen
 }

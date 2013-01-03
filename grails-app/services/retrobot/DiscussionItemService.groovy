@@ -7,7 +7,7 @@ class DiscussionItemService {
 
         if(retro){
             def item = new DiscussionItem(content: content, classification: classification)
-            retro.addToDiscussionItems(item)
+            retro.addToRetroItems(item)
             item.number = findHighestDiscussionItemNumberInRetro(retro) + 1
             retro.save()
             return item
@@ -16,6 +16,6 @@ class DiscussionItemService {
 
     private int findHighestDiscussionItemNumberInRetro(Retrospective retro) {
         // race condition - need better way in the long run
-        retro.getDiscussionItems().max({i -> i.number})?.number ?: 0
+        retro.getRetroItems().max({i -> i.number})?.number ?: 0
     }
 }

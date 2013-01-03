@@ -2,8 +2,8 @@ package retrobot
 
 class Retrospective {
 
-    List discussionItems
-    static hasMany = [discussionItems: DiscussionItem, actionItems: ActionItem, polls: Poll]
+    List retroItems
+    static hasMany = [retroItems: RetroItem, actionItems: ActionItem]
     Boolean isActive
 
     static DiscussionItemClassifications = [

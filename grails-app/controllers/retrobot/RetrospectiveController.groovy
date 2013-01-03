@@ -15,7 +15,7 @@ class RetrospectiveController {
             retro = Retrospective.findByIsActive(true)
 
             if (retro == null) {
-                retro = new Retrospective(discussionItems: [], isActive: true)
+                retro = new Retrospective(retroItems: [], isActive: true)
                 retro.save()
             }
         }
@@ -30,19 +30,29 @@ class RetrospectiveController {
         oldRetro.isActive = false
         oldRetro.save()
 
-        def newRetro = new Retrospective(discussionItems: [], isActive: true)
+        def newRetro = new Retrospective(retroItems: [], isActive: true)
         newRetro.save()
 
-        copyRecurringDiscussionItems(oldRetro, newRetro)
+        copyRecurringRetroItems(oldRetro, newRetro)
 
         redirect([action: "show"])
     }
 
-    private def copyRecurringDiscussionItems(oldRetro, newRetro) {
+    private def copyRecurringRetroItems(oldRetro, newRetro) {
         int num = 1;
-        oldRetro.getDiscussionItems().findAll {i -> i.isRecurring}.each {i ->
-            def newDiscussionItem = new DiscussionItem(content: i.content, isRecurring: i.isRecurring, classification: i.classification, number: num++)
-            newRetro.addToDiscussionItems(newDiscussionItem)
+        oldRetro.getRetroItems().findAll {i -> i.isRecurring}.each {i ->
+            if (i instanceof DiscussionItem) {
+                def newDiscussionItem = new DiscussionItem(content: i.content, isRecurring: i.isRecurring, classification: i.classification, number: num++)
+                newRetro.addToRetroItems(newDiscussionItem)
+            }
+            else if (i instanceof Poll) {
+                def newPoll = new Poll(content: i.content, isRecurring: i.isRecurring, pollItems: [], number: num++)
+                i.pollItems.each { pi ->
+                    def newPollItem = new PollItem(content: pi.content, votes: 0)
+                    newPoll.addToPollItems(newPollItem)
+                }
+                newRetro.addToRetroItems(newPoll)
+            }
         }
         newRetro.save();
     }

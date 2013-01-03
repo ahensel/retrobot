@@ -9,7 +9,7 @@ class PollController {
     def create() {
         def poll = new Poll()
         poll.content = params.retroItemText
-        for (def i = 0; i < params.pollItemCount.toInteger(); i++){
+        for (def i = 0; i < (params.int('pollItemCount') ?: 0); i++){
             poll.addToPollItems(new PollItem(content: params."pollItem${i}", votes: 0))
         }
 

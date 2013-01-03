@@ -1,15 +1,17 @@
 package retrobot
 
-class DiscussionItem {
+class DiscussionItem extends RetroItem {
 
-    String content
+//    String content
+//    static belongsTo = [retrospective: Retrospective]
+//    int number
+//    boolean isRecurring
+//
+//    static constraints = {
+//        content nullable: false
+//    }
+
+
     static hasMany = [actionItems: ActionItem]
-    static belongsTo = [retrospective: Retrospective]
-    int number
-    boolean isRecurring
     int classification  // see Retrospective.DiscussionItemClassifications
-
-    static constraints = {
-        content nullable: false
-    }
 }
