@@ -23,17 +23,21 @@
                     $('#retroItemList').append($(this).children());
                     $(this).html("").hide();
 
-                    if ($('#pollEditor').css('display') != 'none') {
+                    if (pollEditorIsShown()) {
                         showDiscussionEditor();
                     }
                 });
+            }
+
+            function pollEditorIsShown() {
+                return $('#pollEditor').css('display') != 'none';
             }
 
             function showPollEditor() {
                 $('#pollEditor').show('slow');
                 $('#newPollButton').show();
                 $('#newDiscussionItemButton, #classification').hide();
-                $("textarea#content").val().trim().length == 0 ? $("#newPollButton").attr('disabled', 'disabled') : $("#newPollButton").removeAttr('disabled');
+                disableSubmitButtonsIfNoContent();
                 $("#newPollItemContent").val("").focus();
             }
 
@@ -41,15 +45,20 @@
                 $('#pollEditor').hide('slow');
                 $('#newPollButton').hide();
                 $('#newDiscussionItemButton, #classification').show();
-                $("textarea#content").val().trim().length == 0 ? $("#newDiscussionItemButton").attr('disabled', 'disabled') : $("#newDiscussionItemButton").removeAttr('disabled');
+                disableSubmitButtonsIfNoContent();
+            }
+
+            function disableSubmitButtonsIfNoContent() {
+                var buttons = $("#newDiscussionItemButton, #newPollButton");
+                $("textarea#content").val().trim().length == 0 ? buttons.attr('disabled', 'disabled') : buttons.removeAttr('disabled');
             }
 
             function togglePollEditor() {
-                if ($('#pollEditor').css('display') == 'none') {
-                    showPollEditor();
+                if (pollEditorIsShown()) {
+                    showDiscussionEditor();
                 }
                 else {
-                    showDiscussionEditor();
+                    showPollEditor();
                 }
             }
 
@@ -69,7 +78,7 @@
                 $("#newPollButton").hide();
                 $("#newDiscussionItemButton").attr('disabled', 'disabled');
                 $("textarea#content").keyup(function(){
-                    $("textarea#content").val().trim().length == 0 ? $("#newDiscussionItemButton, #newPollButton").attr('disabled', 'disabled') : $("#newDiscussionItemButton, #newPollButton").removeAttr('disabled');
+                    disableSubmitButtonsIfNoContent();
                 });
             });
         </script>
@@ -101,7 +110,12 @@
                 </div>
                 <div id="retroItemList">
                     <g:each in="${retro.retroItems}" var="retroItem">
-                        <g:render template="../discussionItem/discussionItem" bean="${retroItem}"/>
+                        <g:if test="${retroItem instanceof retrobot.DiscussionItem}">
+                            <g:render template="../discussionItem/discussionItem" bean="${retroItem}"/>
+                        </g:if>
+                        <g:if test="${retroItem instanceof retrobot.Poll}">
+                            <g:render template="../poll/poll" bean="${retroItem}"/>
+                        </g:if>
                     </g:each>
                 </div>
                 <g:if test="${retro.isActive}">

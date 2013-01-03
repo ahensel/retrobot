@@ -1,7 +1,5 @@
 package retrobot
 
-import org.springframework.dao.DataIntegrityViolationException
-
 class PollController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
