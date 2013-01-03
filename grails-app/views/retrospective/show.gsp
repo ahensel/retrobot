@@ -19,7 +19,8 @@
                     $("div.discussionItem", this).hover(function(){$("div.actionItemLink", this).toggle()});
 
                     $('#content').val("").focus();
-                    $("#newDiscussionItemButton").attr('disabled', 'disabled')
+                    $("#newDiscussionItemButton").attr('disabled', 'disabled');
+
                     $('#retroItemList').append($(this).children());
                     $(this).html("").hide();
 
@@ -129,7 +130,7 @@
                                 <ul id="pollItems"></ul>
                                 <input type='hidden' id='pollItemCount' name='pollItemCount' value='0'/>
                                 <div class="newPollItemDiv" style="margin-bottom: 10px;">
-                                    &bull;&nbsp;<g:textField name="newPollItemContent" style="width: 80%;"></g:textField>&nbsp;<button onclick="addPollItem(); return false;">Add</button>
+                                    &bull;&nbsp;<g:textField name="newPollItemContent" style="width: 80%;"/>&nbsp;<button onclick="addPollItem(); return false;">Add</button>
                                 </div>
                             </div>
 

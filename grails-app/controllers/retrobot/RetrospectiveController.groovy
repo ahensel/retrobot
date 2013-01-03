@@ -2,7 +2,6 @@ package retrobot
 
 class RetrospectiveController {
 
-//    def discussionItemService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def show() {
