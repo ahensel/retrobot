@@ -1,20 +1,17 @@
 package retrobot
 
 class PollController {
+    def pollService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def create() {
-        def poll = new Poll()
-        poll.content = params.newRetroItemText
+        def pollItems = []
         for (def i = 0; i < (params.int('pollItemCount') ?: 0); i++){
-            poll.addToPollItems(new PollItem(content: params."pollItem${i}", votes: 0))
+            pollItems.add(params."pollItem${i}")
         }
 
-        def retro = Retrospective.findById(params.retroId)
-        retro.addToRetroItems(poll)
-        poll.number = findHighestRetroItemNumberInRetro(retro) + 1
-        retro.save()
+        def poll = pollService.createPoll(params.newRetroItemText, pollItems, params.retroId)
 
         render(template:"poll", bean: poll)
     }
