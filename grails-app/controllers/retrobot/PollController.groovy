@@ -8,14 +8,22 @@ class PollController {
 
     def create() {
         def poll = new Poll()
-        poll.content = params.retroItemText
+        poll.content = params.newRetroItemText
         for (def i = 0; i < (params.int('pollItemCount') ?: 0); i++){
             poll.addToPollItems(new PollItem(content: params."pollItem${i}", votes: 0))
         }
 
         def retro = Retrospective.findById(params.retroId)
-        retro.addToPolls(poll)
+        retro.addToRetroItems(poll)
+        poll.number = findHighestRetroItemNumberInRetro(retro) + 1
         retro.save()
+
+        render(template:"poll", bean: poll)
+    }
+
+    private int findHighestRetroItemNumberInRetro(Retrospective retro) {
+        // race condition - need better way in the long run
+        retro.getRetroItems().max({i -> i.number})?.number ?: 0
     }
 
     def save() {

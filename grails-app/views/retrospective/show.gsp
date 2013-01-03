@@ -22,22 +22,34 @@
                     $("#newDiscussionItemButton").attr('disabled', 'disabled')
                     $('#retroItemList').append($(this).children());
                     $(this).html("").hide();
+
+                    if ($('#pollEditor').css('display') != 'none') {
+                        showDiscussionEditor();
+                    }
                 });
+            }
+
+            function showPollEditor() {
+                $('#pollEditor').show('slow');
+                $('#newPollButton').show();
+                $('#newDiscussionItemButton, #classification').hide();
+                $("textarea#content").val().trim().length == 0 ? $("#newPollButton").attr('disabled', 'disabled') : $("#newPollButton").removeAttr('disabled');
+                $("#newPollItemContent").val("").focus();
+            }
+
+            function showDiscussionEditor() {
+                $('#pollEditor').hide('slow');
+                $('#newPollButton').hide();
+                $('#newDiscussionItemButton, #classification').show();
+                $("textarea#content").val().trim().length == 0 ? $("#newDiscussionItemButton").attr('disabled', 'disabled') : $("#newDiscussionItemButton").removeAttr('disabled');
             }
 
             function togglePollEditor() {
                 if ($('#pollEditor').css('display') == 'none') {
-                    $('#pollEditor').show('slow');
-                    $('#newPollButton').show();
-                    $('#newDiscussionItemButton, #classification').hide();
-                    $("textarea#content").val().trim().length == 0 ? $("#newPollButton").attr('disabled', 'disabled') : $("#newPollButton").removeAttr('disabled');
-                    $("#newPollItemContent").val("").focus();
+                    showPollEditor();
                 }
                 else {
-                    $('#pollEditor').toggle('hide');
-                    $('#newPollButton').hide();
-                    $('#newDiscussionItemButton, #classification').show();
-                    $("textarea#content").val().trim().length == 0 ? $("#newDiscussionItemButton").attr('disabled', 'disabled') : $("#newDiscussionItemButton").removeAttr('disabled');
+                    showDiscussionEditor();
                 }
             }
 
