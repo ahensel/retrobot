@@ -136,7 +136,7 @@
                             </div>
 
                             <div>
-                                <g:submitToRemote name="DiscussionItem" id="newDiscussionItemButton" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" action="create" controller="discussionItem"/>
+                                <g:submitToRemote name="DiscussionItem" id="newDiscussionItemButton" value="Add Discussion Item" update="retroItemJustAdded" after="appendItemJustAdded()" onComplete="appendItemJustAdded()" action="create" controller="discussionItem"/>
                                 <g:submitToRemote name="Poll" id="newPollButton" value="Add Poll" update="retroItemJustAdded" after="appendItemJustAdded()" action="create" controller="poll"/>
                                 <g:select name="classification" id="classification" optionKey="id" optionValue="value"
                                           from="${Retrospective.DiscussionItemClassifications}"/>
