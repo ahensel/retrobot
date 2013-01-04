@@ -1,6 +1,6 @@
 package retrobot
 
-class ActionItem {
+class ActionItem extends RetroItem {
 
     static belongsTo = [retrospective: Retrospective, discussionItem: DiscussionItem]
 

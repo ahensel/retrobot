@@ -73,6 +73,7 @@
             }
 
             $(document).ready(function() {
+                $("div.actionItem").hover(function(){$("div.itemEditLink", this).toggle()})
                 $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()});
                 $("div.discussionItem").hover(function(){$("div.actionItemLink", this).toggle()});
 
@@ -150,9 +151,14 @@
                     Action Items
                 </div>
                 <div id="actionItemList">
-                    <g:each in="${retro.actionItems}" var="actionItem">
-                        <g:render template="../actionItem/actionItem" bean="${actionItem}"/>
+                    <g:each in="${retro.retroItems}" var="retroItem">
+                        <g:if test="${retroItem instanceof retrobot.ActionItem}">
+                            <g:render template="../actionItem/actionItem" bean="${retroItem}"/>
+                        </g:if>
                     </g:each>
+                    %{--<g:each in="${retro.actionItems}" var="actionItem">--}%
+                        %{--<g:render template="../actionItem/actionItem" bean="${actionItem}"/>--}%
+                    %{--</g:each>--}%
                 </div>
             </div>
             </div>
