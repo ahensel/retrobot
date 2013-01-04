@@ -22,25 +22,19 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list discussionItem">
-			
 				<g:if test="${discussionItemInstance?.content}">
 				<li class="fieldcontain">
 					<span id="content-label" class="property-label"><g:message code="discussionItem.content.label" default="Content" /></span>
-					
-						<span class="property-value" aria-labelledby="content-label"><g:fieldValue bean="${discussionItemInstance}" field="content"/></span>
-					
+					<span class="property-value" aria-labelledby="content-label"><g:fieldValue bean="${discussionItemInstance}" field="content"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${discussionItemInstance?.retrospective}">
 				<li class="fieldcontain">
 					<span id="retrospective-label" class="property-label"><g:message code="discussionItem.retrospective.label" default="Retrospective" /></span>
-					
-						<span class="property-value" aria-labelledby="retrospective-label"><g:link controller="retrospective" action="show" id="${discussionItemInstance?.retrospective?.id}">${discussionItemInstance?.retrospective?.encodeAsHTML()}</g:link></span>
-					
+				    <span class="property-value" aria-labelledby="retrospective-label"><g:link controller="retrospective" action="show" id="${discussionItemInstance?.retrospective?.id}">${discussionItemInstance?.retrospective?.encodeAsHTML()}</g:link></span>
 				</li>
 				</g:if>
-			
 			</ol>
 			<g:form>
 				<fieldset class="buttons">

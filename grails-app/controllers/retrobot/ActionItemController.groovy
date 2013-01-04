@@ -17,7 +17,7 @@ class ActionItemController {
         def actionItem = new ActionItem(params)
         def discussionItem = DiscussionItem.findById(params.discussionItemId)
         discussionItem.addToActionItems(actionItem)
-        discussionItem.retrospective.addToRetroItems(actionItem)
+        discussionItem.retrospective.addToActionItems(actionItem)
         discussionItem.retrospective.save()
 
         redirect(controller: "retrospective", action: "show", id: discussionItem.retrospective.id)
@@ -46,7 +46,7 @@ class ActionItemController {
             render status: HttpServletResponse.SC_BAD_REQUEST
         } else{
             def retroID = actionItem.retrospective.id
-            actionItem.retrospective.removeFromRetroItems(actionItem)
+            actionItem.retrospective.removeFromActionItems(actionItem)
             actionItem.discussionItem.removeFromActionItems(actionItem)
             actionItem.delete(flush:true)
             redirect(controller: 'retrospective', action: 'show', id: retroID)
