@@ -1,6 +1,6 @@
-<%@ page import="retrobot.Retrospective" %>
+<%@ page import="grails.converters.JSON; retrobot.Retrospective" %>
 <!DOCTYPE html>
-<html>
+<html ng-app>
     <head>
         %{--<meta name="layout" content="main">--}%
 
@@ -12,6 +12,7 @@
         <g:javascript library="jquery"/>
         <r:layoutResources/>
 
+        <script src="js/angular.js"></script>
         <script type="text/javascript">
             function appendItemJustAdded() {
                 $('#retroItemJustAdded').show('slow', function() {
@@ -83,6 +84,11 @@
                     disableSubmitButtonsIfNoContent();
                 });
             });
+
+            function RetroController($scope) {
+                $scope.retroItems = ${(retro.retroItems as JSON).toString()};
+            }
+
         </script>
     </head>
     <body>
@@ -111,20 +117,88 @@
                     Discussion Items
                 </div>
                 <div id="retroItemList">
+                    <div ng-controller="RetroController">
+                        <div class="discussionItemWrapper" style="overflow: hidden" ng-repeat="retroItem in retroItems">
+                            <div class="discussionItemNumber">
+                                {{retroItem.number}}
+                            </div>
+                            <div ng-if="retroItem.class === 'retrobot.DiscussionItem'" class="discussionItem discussionItemType{{retroItem.classification}}">
+                                {{retroItem.content}}
+                                <div class="itemEditLink" style="float: right" hidden="hidden">
+                                    <a href="${createLink(controller: 'discussionItem', action: 'edit')}/{{retroItem.id}}">
+                                        <g:img dir="images" file="Wrench.png" width="16" height="16"/>
+                                    </a>
+                                </div>
+                                <div class="actionItemLink" style="float: right; padding-right: 5px" hidden="hidden">
+                                    <a href="${createLink(controller: 'actionItem', action: 'create')}?discussionId={{retroItem.id}}">
+                                        <g:img dir="images" file="Add.png" width="16" height="16"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div ng-if="retroItem.class === 'retrobot.Poll'" class="discussionItem" style="padding-left: 40px;">
+                                {{retroItem.content}}
+                                <br/>
+                                <div id="poll_{{retroItem.number}}">
+                                    <div ng-repeat="pollItem in retroItem.pollItems">
+                                        <label>
+                                            <g:radio name="poll_{{retroItem.number}}" value="radio_{{pollItem.id}}" />
+                                            {{pollItem.content}}
+                                        </label>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <button>Vote</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <hr>the real stuff<hr>
+
                     <g:each in="${retro.retroItems}" var="retroItem">
-                        <g:if test="${retroItem instanceof retrobot.DiscussionItem}">
-                            <g:render template="../discussionItem/discussionItem" bean="${retroItem}"/>
-                        </g:if>
-                        <g:if test="${retroItem instanceof retrobot.Poll}">
-                            <g:render template="../poll/poll" bean="${retroItem}"/>
-                        </g:if>
+                        <div class="discussionItemWrapper" style="overflow: hidden">
+                            <div class="discussionItemNumber">
+                                ${retroItem.number}
+                            </div>
+                            <g:if test="${retroItem instanceof retrobot.DiscussionItem}">
+                                <div class="discussionItem discussionItemType${retroItem.classification}">
+                                    ${retroItem.content}
+                                    <div class="itemEditLink" style="float: right" hidden="true">
+                                        <g:link controller="discussionItem" action="edit" params="[id: retroItem.id]"><g:img dir="images" file="Wrench.png" width="16" height="16"></g:img></g:link>
+                                    </div>
+
+                                    <div class="actionItemLink" style="float: right; padding-right: 5px" hidden="true">
+                                        <g:link controller="actionItem" action="create" params="[discussionId: retroItem.id]"><g:img dir="images" file="Add.png" width="16" height="16"></g:img></g:link>
+                                    </div>
+                                </div>
+                            </g:if>
+                            <g:if test="${retroItem instanceof retrobot.Poll}">
+                                <div class="discussionItem" style="padding-left: 40px;">
+                                    ${retroItem.content}
+                                    <br/>
+                                    <div id="poll_${retroItem.number}">
+                                        <g:each in="${retroItem.pollItems}" var="pollItem">
+                                            <label>
+                                                <g:radio name="poll_${retroItem.number}" value="radio_${pollItem.id}" />
+                                                ${pollItem.content}
+                                            </label>
+                                            <br/>
+                                        </g:each>
+                                    </div>
+                                    <br/>
+                                    <button>Vote</button>
+                                </div>
+                            </g:if>
+                        </div>
                     </g:each>
                 </div>
                 <g:if test="${retro.isActive}">
                     <div id="retroItemJustAdded" hidden="hidden"></div>
                     <div class="discussionItem">
                         <g:formRemote url="[controller: 'discussionItem', action: 'create']" name="add">
-                            <g:textArea name="newRetroItemText" id="content" rows="5" cols="50" maxlength="255" width="100%" autofocus="autofocus"/>
+                            <g:textArea name="newRetroItemText" id="content" rows="5" cols="50" maxlength="255" width="100%" autofocus="autofocus" ng-model="retroItemContent"/>
                             <g:hiddenField name="retroId" value="${retro.id}"/>
                             <div id="pollEditor" hidden="hidden">
                                 <span style="font-size: 10pt;">Add Poll Items:</span>
