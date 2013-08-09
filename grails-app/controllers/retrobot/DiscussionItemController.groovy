@@ -1,5 +1,7 @@
 package retrobot
 
+import grails.converters.JSON
+
 import javax.servlet.http.HttpServletResponse
 
 class DiscussionItemController {
@@ -32,6 +34,12 @@ class DiscussionItemController {
         def discussionItem = discussionItemService.createDiscussionItem(params.newRetroItemText, params.retroId, params.classification)
 
         render(template:"discussionItem", bean: discussionItem)
+    }
+
+    def createWithJson(){
+        def discussionItem = discussionItemService.createDiscussionItem(params.newRetroItemText, params.retroId, params.classification)
+
+        render discussionItem as JSON
     }
 
     def delete(){
