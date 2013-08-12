@@ -7,7 +7,10 @@ class UrlMappings {
 			}
 		}
 
-        "/"(controller:"retrospective", action:"show")
+        "/retro"(controller:"retrospective", action:"show")
+
+        "/"(controller:"project", action:"show")
+
 		"500"(view:'/error')
 	}
 }

@@ -2,6 +2,8 @@ package retrobot
 
 class Retrospective {
 
+    static belongsTo = [project: Project]
+
     List retroItems
     static hasMany = [retroItems: RetroItem, actionItems: ActionItem]
     Boolean isActive

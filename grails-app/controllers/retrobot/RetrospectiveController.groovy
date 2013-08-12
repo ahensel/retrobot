@@ -6,20 +6,22 @@ class RetrospectiveController {
 
     def show() {
         def retro = null
+        def project = Project.findById(params.project)
 
         if (params.id) {
             retro = Retrospective.findById(params.id)
         }
         else {
-            retro = Retrospective.findByIsActive(true)
+            retro = Retrospective.findByProjectAndIsActive(project, true)
 
             if (retro == null) {
                 retro = new Retrospective(retroItems: [], isActive: true)
+                project.addToRetrospectives(retro)
                 retro.save()
             }
         }
 
-        def previousRetros = Retrospective.findAllByIsActive(false)
+        def previousRetros = Retrospective.findAllByProjectAndIsActive(project, false)
 
         [retro: retro, previousRetros: previousRetros]
     }
@@ -30,11 +32,12 @@ class RetrospectiveController {
         oldRetro.save()
 
         def newRetro = new Retrospective(retroItems: [], isActive: true)
+        oldRetro.project.addToRetrospectives(newRetro)
         newRetro.save()
 
         copyRecurringRetroItems(oldRetro, newRetro)
 
-        redirect([action: "show"])
+        redirect([action: "show", params: [project: oldRetro.project.id]])
     }
 
     private def copyRecurringRetroItems(oldRetro, newRetro) {
@@ -53,7 +56,7 @@ class RetrospectiveController {
                 newRetro.addToRetroItems(newPoll)
             }
         }
-        newRetro.save();
+        newRetro.save()
     }
 
 

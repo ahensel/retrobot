@@ -121,19 +121,20 @@
     </head>
     <body>
         <div class="sidebar">
-            <g:link controller="retrospective" action="show">Current Retro</g:link>
+            <g:link controller="retrospective" action="show" params="[project: retro.project.id]">Current Retro</g:link>
             <br/><br/>
             <g:each in="${previousRetros}" var="previousRetro">
-                <g:link controller="retrospective" action="show" id="${previousRetro.id}">Retrospective ${previousRetro.id}</g:link>
+                <g:link controller="retrospective" action="show" params="[project: previousRetro.project.id, id: previousRetro.id]">Retrospective ${previousRetro.id}</g:link>
                 <br/>
             </g:each>
         </div>
         <div class="retrospective" id="retro">
             <div class="retroHeader">
-                Foo team retrospective
+                ${retro.project.name} retrospective ${retro.id}
                 <span style="float: right">
                     <g:form url="[controller: 'retrospective', action: 'close']" name="close">
                         <g:hiddenField name="retroId" value="${retro.id}"/>
+                        <g:hiddenField name="project" value="${retro.project.id}"/>
                         <g:submitButton name="Retrospective" value="Close Retro"/>
                     </g:form>
                 </span>
