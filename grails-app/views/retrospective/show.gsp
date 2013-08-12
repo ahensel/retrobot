@@ -12,8 +12,25 @@
         <g:javascript library="jquery"/>
         <r:layoutResources/>
 
+        <script src="http://localhost:8787/scripts/bart.js"></script>
         <script src="js/angular.js"></script>
         <script type="text/javascript">
+
+
+            function thisRetroTopic() {
+                return thisProjectTopic() + "/" + $("#retroId").val();
+            }
+
+            function thisProjectTopic() {
+                return "/rally/retro/projectFoo";
+            }
+
+            function publish(topic, message) {
+                Bart.connect(function () {
+                    Bart.publish(topic, message);
+                });
+            }
+
 
             function pollEditorIsShown() {
                 return $('#pollEditor').css('display') != 'none';
@@ -58,6 +75,18 @@
             }
 
             $(document).ready(function() {
+                Bart.connect(function () {
+                    Bart.subscribe(thisRetroTopic(), function (message) {
+                        if (message.type === 'appendDiscussionItem') {
+                            appendDiscussionItem(message.item);
+                        }
+                    });
+                    Bart.subscribe(thisProjectTopic(), function (message) {
+                        alert("project change alert, type = " + message.type);
+                    });
+                });
+
+
                 $("div.actionItem").hover(function(){$("div.itemEditLink", this).toggle()})
                 $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()});
                 $("div.discussionItem").hover(function(){$("div.actionItemLink", this).toggle()});
@@ -80,8 +109,13 @@
                 }
             }
 
-            function appendJsonItemJustAdded(discussionItem) {
+            function appendDiscussionItem(discussionItem) {
                 angular.element($('#retroItemList')).scope().addDiscussionItem(discussionItem);
+            }
+
+            function appendAndPublishDiscussionItem(discussionItem) {
+                appendDiscussionItem(discussionItem);
+                publish(thisRetroTopic(), {type: 'appendDiscussionItem', item: discussionItem});
             }
         </script>
     </head>
@@ -155,7 +189,7 @@
 
                             <div>
                                 <g:submitToRemote name="DiscussionItem" id="newDiscussionItemButton"
-                                                  value="Add Discussion Item" onSuccess="appendJsonItemJustAdded(data)"
+                                                  value="Add Discussion Item" onSuccess="appendAndPublishDiscussionItem(data)"
                                                   action="createWithJson" controller="discussionItem"/>
 
                                 <g:select name="classification" id="classification" optionKey="id" optionValue="value"
