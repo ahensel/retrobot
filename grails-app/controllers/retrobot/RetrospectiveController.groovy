@@ -15,8 +15,7 @@ class RetrospectiveController {
             retro = Retrospective.findByProjectAndIsActive(project, true)
 
             if (retro == null) {
-                retro = new Retrospective(retroItems: [], isActive: true)
-                project.addToRetrospectives(retro)
+                retro = newInitializedRetro(project)
                 retro.save()
             }
         }
@@ -26,13 +25,26 @@ class RetrospectiveController {
         [retro: retro, previousRetros: previousRetros]
     }
 
+    def newInitializedRetro(Project project) {
+        def retroNumber = Retrospective.countByProject(project) + 1
+        def retro = new Retrospective(retroItems: [], isActive: true, name: "Retrospective " + retroNumber, number: retroNumber)
+        project.addToRetrospectives(retro)
+        return retro
+    }
+
+    def setName() {
+        def retro = Retrospective.findById(params.id)
+        retro.name = params.name
+        retro.save()
+    }
+
+
     def close() {
         def oldRetro = Retrospective.findById(params.retroId)
         oldRetro.isActive = false
         oldRetro.save()
 
-        def newRetro = new Retrospective(retroItems: [], isActive: true)
-        oldRetro.project.addToRetrospectives(newRetro)
+        def newRetro = newInitializedRetro(oldRetro.project)
         newRetro.save()
 
         copyRecurringRetroItems(oldRetro, newRetro)

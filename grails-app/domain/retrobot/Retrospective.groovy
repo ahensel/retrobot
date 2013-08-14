@@ -7,6 +7,8 @@ class Retrospective {
     List retroItems
     static hasMany = [retroItems: RetroItem, actionItems: ActionItem]
     Boolean isActive
+    String name
+    int number
 
     static DiscussionItemClassifications = [
             [id:1, value:'Worked well'],

@@ -9,7 +9,9 @@ class UrlMappings {
 
         "/retro"(controller:"retrospective", action:"show")
 
-        "/"(controller:"project", action:"show")
+        "/projects"(controller:"project", action:"show")
+
+        "/"(controller:"login", action:"show")
 
 		"500"(view:'/error')
 	}

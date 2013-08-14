@@ -86,6 +86,18 @@
                     });
                 });
 
+                $('#retroNameField').on('keydown', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        enterRetroName();
+                    }
+                    else if (e.which == 27) {
+                        e.preventDefault();
+                        escapeRetroName();
+                    }
+                });
+
+                $('#retroName').text('${retro.name}');
 
                 $("div.actionItem").hover(function(){$("div.itemEditLink", this).toggle()})
                 $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()});
@@ -117,20 +129,61 @@
                 appendDiscussionItem(discussionItem);
                 publish(thisRetroTopic(), {type: 'appendDiscussionItem', item: discussionItem});
             }
+
+            function editRetroName() {
+                $("#retroNameField").val($("#retroName").text());
+                $("#retroName").hide();
+                $("#retroNameEdit").hide();
+                $("#retroNameField").show().focus().select();
+            }
+
+            function enterRetroName() {
+                var newRetroName = $("#retroNameField").val().trim();
+                if (newRetroName === '') {
+                    newRetroName = '${retro.name}';
+                }
+
+                $("#retroName").text(newRetroName);
+                $("#retroNameField").hide();
+                $("#retroName").show();
+                $("#retroNameEdit").show();
+
+                ajaxSetRetroName(newRetroName);
+            }
+
+            function escapeRetroName() {
+                $("#retroNameField").hide();
+                $("#retroName").show();
+                $("#retroNameEdit").show();
+            }
+
+            function ajaxSetRetroName(retroName) {
+                $.post("${createLink(controller: 'retrospective', action: 'setName')}", {'name': retroName, 'id': $('#retroId').val()});
+            }
         </script>
     </head>
     <body>
         <div class="sidebar">
+            <g:link controller="project" action="show">Projects</g:link>
+            <br/><br/>
             <g:link controller="retrospective" action="show" params="[project: retro.project.id]">Current Retro</g:link>
             <br/><br/>
             <g:each in="${previousRetros}" var="previousRetro">
-                <g:link controller="retrospective" action="show" params="[project: previousRetro.project.id, id: previousRetro.id]">Retrospective ${previousRetro.id}</g:link>
-                <br/>
+                <div style="margin-bottom: 10px; background-color: #ffffff; border-radius: 8px; padding: 4px">
+                    <g:link controller="retrospective" action="show" params="[project: previousRetro.project.id, id: previousRetro.id]">${previousRetro.name}</g:link>
+                </div>
             </g:each>
         </div>
+
         <div class="retrospective" id="retro">
             <div class="retroHeader">
-                ${retro.project.name} retrospective ${retro.id}
+
+                <span id="retroName"></span>
+                <g:if test="${retro.isActive}">
+                    <g:textField name="retroNameField" id="retroNameField" style="display:none" />
+                    <a id="retroNameEdit" href="#" onclick="editRetroName()" style="font-size: 9pt;">edit</a>
+                </g:if>
+
                 <span style="float: right">
                     <g:form url="[controller: 'retrospective', action: 'close']" name="close">
                         <g:hiddenField name="retroId" value="${retro.id}"/>
@@ -138,8 +191,11 @@
                         <g:submitButton name="Retrospective" value="Close Retro"/>
                     </g:form>
                 </span>
-                <hr style="border: 1px solid #808080">
             </div>
+            <div class="retroDetails">
+                Project: ${retro.project.name}
+            </div>
+            <hr style="border: 1px solid #808080">
             <div class="columnContainer">
             <div class="retroItemColumn">
                 <div class="columnHeader">
