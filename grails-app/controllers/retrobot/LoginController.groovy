@@ -22,19 +22,17 @@ class LoginController {
     }
 
     def authenticate(username, password) {
-        // TEMPORARY override until I figure out what is wrong with the WSAPI call
-        if (username.startsWith("ahensel")) {
-            return true
-        }
+        // TEMPORARY override until I figure out what is wrong with the WSAPI call below
+        return true
 
         // this doesn't actually work :-(
-        try {
-            def securityToken = getSecurityToken(username, password)
-            return true
-        }
-        catch (IOException ioe) {
-            return false
-        }
+//        try {
+//            def securityToken = getSecurityToken(username, password)
+//            return true
+//        }
+//        catch (IOException ioe) {
+//            return false
+//        }
     }
 
 
