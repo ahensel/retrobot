@@ -127,6 +127,7 @@ div.sidebar {
     margin: 15px;
     width:150px;
     border-radius: 8px;
+    font-family: 'Maven Pro', Arial, sans-serif;
 }
 
 div.retroHeader{
@@ -135,6 +136,17 @@ div.retroHeader{
     font-size: 18pt;
     font-weight: bold;
     padding-bottom: 20px;
+}
+span#retroName{
+    font-family: Arial, sans-serif;
+}
+input#retroNameField {
+    border: 1px solid #808080;
+    height: 28px;
+    width: 400px;
+    font-size: 18pt;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
 }
 
 div.columnHeader {

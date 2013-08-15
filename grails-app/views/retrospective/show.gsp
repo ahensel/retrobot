@@ -4,6 +4,7 @@
     <head>
         %{--<meta name="layout" content="main">--}%
 
+        <link href='http://fonts.googleapis.com/css?family=Maven+Pro:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="<g:createLinkTo dir='css' file='retro.css'/>"/>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
         <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
@@ -180,7 +181,7 @@
 
                 <span id="retroName"></span>
                 <g:if test="${retro.isActive}">
-                    <g:textField name="retroNameField" id="retroNameField" style="display:none" />
+                    <g:textField name="retroNameField" id="retroNameField" style="display:none" maxlength="255" />
                     <a id="retroNameEdit" href="#" onclick="editRetroName()" style="font-size: 9pt;">edit</a>
                 </g:if>
 

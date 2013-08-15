@@ -6,8 +6,11 @@
     <link href='http://fonts.googleapis.com/css?family=Maven+Pro:400,700' rel='stylesheet' type='text/css'>
     <style type="text/css">
         body {
-            font-family: 'Maven Pro', sans-serif;
             margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        div#projectSelection {
+            font-family: 'Maven Pro', Arial, sans-serif;
         }
     </style>
 </head>
@@ -16,9 +19,11 @@
 <body>
     Projects:
     <br/><br/>
-    <g:each in="${projects}" var="project">
-        <a href="${createLink(controller: 'retrospective', action: 'show')}?project=${project.id}">${project.name}</a>
-        <br/>
-    </g:each>
+    <div id="projectSelection">
+        <g:each in="${projects}" var="project">
+            <a href="${createLink(controller: 'retrospective', action: 'show')}?project=${project.id}">${project.name}</a>
+            <br/>
+        </g:each>
+    </div>
 </body>
 </html>
