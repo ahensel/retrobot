@@ -80,6 +80,10 @@
                         if (message.type === 'appendDiscussionItem') {
                             appendDiscussionItem(message.item);
                         }
+                        else if (message.type === 'changeRetroName') {
+                            $("#retroName").text(message.item);
+                            $("#retroNameField").val(message.item);
+                        }
                     });
                     Bart.subscribe(thisProjectTopic(), function (message) {
                         alert("project change alert, type = " + message.type);
@@ -139,16 +143,11 @@
 
             function enterRetroName() {
                 var newRetroName = $("#retroNameField").val().trim();
-                if (newRetroName === '') {
-                    newRetroName = '${retro.name}';
+                if (newRetroName !== '') {
+                    $("#retroName").text(newRetroName);
+                    changeRetroName(newRetroName);
                 }
-
-                $("#retroName").text(newRetroName);
-                $("#retroNameField").hide();
-                $("#retroName").show();
-                $("#retroNameEdit").show();
-
-                ajaxSetRetroName(newRetroName);
+                escapeRetroName();
             }
 
             function escapeRetroName() {
@@ -157,8 +156,9 @@
                 $("#retroNameEdit").show();
             }
 
-            function ajaxSetRetroName(retroName) {
+            function changeRetroName(retroName) {
                 $.post("${createLink(controller: 'retrospective', action: 'setName')}", {'name': retroName, 'id': $('#retroId').val()});
+                publish(thisRetroTopic(), {type: 'changeRetroName', item: retroName});
             }
         </script>
     </head>
