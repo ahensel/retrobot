@@ -155,3 +155,11 @@ div.columnHeader {
     text-decoration: underline;
     font-weight: bold;
 }
+
+div.retroListItem {
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #cccccc;
+    padding: 4px;
+}

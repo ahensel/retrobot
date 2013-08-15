@@ -75,6 +75,10 @@
                 $("#newPollItemContent").val("").focus();
             }
 
+            function refreshPage() {
+                location.reload(true);
+            }
+
             $(document).ready(function() {
                 Bart.connect(function () {
                     Bart.subscribe(thisRetroTopic(), function (message) {
@@ -85,9 +89,17 @@
                             $("#retroName").text(message.item);
                             $("#retroNameField").val(message.item);
                         }
+                        else {
+                            alert("retro change alert, type = " + message.type);
+                        }
                     });
                     Bart.subscribe(thisProjectTopic(), function (message) {
-                        alert("project change alert, type = " + message.type);
+                        if (message.type === 'closeRetro') {
+                            setTimeout(refreshPage, 500);  // cheap avoidance of race condition
+                        }
+                        else {
+                            alert("project change alert, type = " + message.type);
+                        }
                     });
                 });
 
@@ -161,16 +173,21 @@
                 $.post("${createLink(controller: 'retrospective', action: 'setName')}", {'name': retroName, 'id': $('#retroId').val()});
                 publish(thisRetroTopic(), {type: 'changeRetroName', item: retroName});
             }
+
+            function publishCloseEvent() {
+                publish(thisProjectTopic(), {type: 'closeRetro'});
+            }
         </script>
     </head>
     <body>
         <div class="sidebar">
             <g:link controller="project" action="show">Projects</g:link>
-            <br/><br/>
-            <g:link controller="retrospective" action="show" params="[project: retro.project.id]">Current Retro</g:link>
-            <br/><br/>
+            <hr>
+            <div class="retroListItem">
+                <g:link controller="retrospective" action="show" params="[project: retro.project.id]">Current Retro</g:link>
+            </div>
             <g:each in="${previousRetros}" var="previousRetro">
-                <div style="margin-bottom: 10px; background-color: #ffffff; border-radius: 8px; padding: 4px">
+                <div class="retroListItem">
                     <g:link controller="retrospective" action="show" params="[project: previousRetro.project.id, id: previousRetro.id]">${previousRetro.name}</g:link>
                 </div>
             </g:each>
@@ -189,11 +206,12 @@
                     <g:form url="[controller: 'retrospective', action: 'close']" name="close">
                         <g:hiddenField name="retroId" value="${retro.id}"/>
                         <g:hiddenField name="project" value="${retro.project.id}"/>
-                        <g:submitButton name="Retrospective" value="Close Retro"/>
+                        <g:submitButton name="Retrospective" value="Close Retro" onclick="publishCloseEvent(); return true;"/>
                     </g:form>
                 </span>
             </div>
             <div class="retroDetails">
+                Number: ${retro.number},
                 Project: ${retro.project.name}
             </div>
             <hr style="border: 1px solid #808080">
