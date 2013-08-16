@@ -20,7 +20,7 @@ class ActionItemController {
         discussionItem.retrospective.addToActionItems(actionItem)
         discussionItem.retrospective.save()
 
-        redirect(controller: "retrospective", action: "show", id: discussionItem.retrospective.id)
+        redirect(controller: "retrospective", action: "show", params: [id: discussionItem.retrospective.id, project: discussionItem.retrospective.project.id])
     }
 
     def edit() {
@@ -36,7 +36,7 @@ class ActionItemController {
         def actionItem = ActionItem.findById(params.id)
         actionItem.properties = params
         actionItem.save()
-        redirect(controller: 'retrospective', action: 'show', id: actionItem.retrospective.id)
+        redirect(controller: 'retrospective', action: 'show', params: [id: actionItem.retrospective.id, project: actionItem.retrospective.project.id])
     }
 
     def delete(){
@@ -46,10 +46,11 @@ class ActionItemController {
             render status: HttpServletResponse.SC_BAD_REQUEST
         } else{
             def retroID = actionItem.retrospective.id
+            def projectID = actionItem.retrospective.project.id
             actionItem.retrospective.removeFromActionItems(actionItem)
             actionItem.discussionItem.removeFromActionItems(actionItem)
             actionItem.delete(flush:true)
-            redirect(controller: 'retrospective', action: 'show', id: retroID)
+            redirect(controller: 'retrospective', action: 'show', params: [id: retroID, project: projectID])
         }
     }
 }
