@@ -116,9 +116,8 @@
 
                 $('#retroName').text('${retro.name}');
 
-                $("div.actionItem").hover(function(){$("div.itemEditLink", this).toggle()})
-                $("div.discussionItem").hover(function(){$("div.itemEditLink", this).toggle()});
-                $("div.discussionItem").hover(function(){$("div.actionItemLink", this).toggle()});
+                hookUpDiscussionItems();
+                hookUpActionItems();
 
                 $("#newPollButton").hide();
                 $("#newDiscussionItemButton").attr('disabled', 'disabled');
@@ -126,6 +125,18 @@
                     disableSubmitButtonsIfNoContent();
                 });
             });
+
+            function hookUpDiscussionItems() {
+                var discussionItems = $("div.discussionItem").not('.hoversApplied');
+                discussionItems.hover(function(){$("div.itemEditLink", this).toggle(); $("div.actionItemLink", this).toggle();});
+                discussionItems.addClass('hoversApplied');
+            }
+
+            function hookUpActionItems() {
+                var actionItems = $("div.actionItem").not('.hoversApplied');
+                actionItems.hover(function(){$("div.itemEditLink", this).toggle()})
+                actionItems.addClass('hoversApplied');
+            }
 
             function RetroController($scope) {
                 $scope.retroItems = ${(retro.retroItems as JSON).toString()};
@@ -140,6 +151,7 @@
 
             function appendDiscussionItem(discussionItem) {
                 angular.element($('#retroItemList')).scope().addDiscussionItem(discussionItem);
+                hookUpDiscussionItems();
             }
 
             function appendAndPublishDiscussionItem(discussionItem) {
